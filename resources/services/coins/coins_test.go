@@ -44,7 +44,6 @@ func TestCoinsNextPageEmpty(t *testing.T) {
 	client.MockTestHelper(t, CoinsTable(), buildDeps, client.TestOptions{StartTime: time.Now().Add(-2 * time.Hour), Interval: "1h"})
 }
 
-
 func TestCoinsWithBackend(t *testing.T) {
 	buildDeps := func(t *testing.T, ctrl *gomock.Controller) client.CoinpaprikaServices {
 		cs := mock.NewMockCoinsService(ctrl)
