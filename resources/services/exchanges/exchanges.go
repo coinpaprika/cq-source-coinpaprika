@@ -20,10 +20,10 @@ func ExchangesTable() *schema.Table {
 
 func fetchExchanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	exchnages, err := cl.CoinpaprikaClient.Exchanges.List(nil)
+	exchanges, err := cl.CoinpaprikaClient.Exchanges.List(nil)
 	if err != nil {
 		return fmt.Errorf("get list of exchanges failure: %w", err)
 	}
-	res <- exchnages
+	res <- exchanges
 	return nil
 }
