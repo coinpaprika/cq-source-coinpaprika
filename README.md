@@ -28,7 +28,7 @@ spec:
   spec: 
     start_date: "2023-05-15T08:00:00Z"
     interval: "1h" 
-    access_token: "aaa-bbb-ccc"
+    access_token: "${COINPAPRIKA_API_TOKEN}"
 ```
 
 | Spec fields | Description | Optional | 
