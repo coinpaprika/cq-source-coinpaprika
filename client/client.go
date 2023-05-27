@@ -46,6 +46,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	retryClient.RetryMax = 3
 	retryClient.RetryWaitMin = 1 * time.Second
 	retryClient.RetryWaitMax = 5 * time.Second
+	retryClient.Logger = nil
 
 	cc := coinpaprika.NewClient(retryClient.StandardClient(), cOpts...)
 
