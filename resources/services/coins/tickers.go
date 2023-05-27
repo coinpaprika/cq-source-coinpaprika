@@ -11,7 +11,10 @@ import (
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 )
 
-const stateKeyTpl = "tickers_%s"
+const (
+	stateKeyTpl   = "tickers_%s"
+	partitionSize = 1000
+)
 
 func TickersTable() *schema.Table {
 	return &schema.Table{
@@ -46,7 +49,8 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	c := parent.Item.(*coinpaprika.Coin)
 	cl := meta.(*client.Client)
 
-	var startDate *time.Time
+	startDate := cl.StartDate
+
 	key := fmt.Sprintf(stateKeyTpl, *c.ID)
 	if cl.Backend != nil {
 		value, err := cl.Backend.Get(ctx, key, cl.ID())
@@ -58,33 +62,36 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			if err != nil {
 				return fmt.Errorf("failed to parse timestamp  from backend: %w", err)
 			}
-			startDate = &start
+			startDate = start
 		}
 	}
 	opt := coinpaprika.TickersHistoricalOptions{}
 
-	if startDate == nil {
-		startDate = &cl.StartDate
-	}
-	opt.Start = *startDate
 	opt.Interval = cl.Interval
 	interval, err := time.ParseDuration(cl.Interval)
 	if err != nil {
 		return fmt.Errorf("failed to parse interval: %w", err)
 	}
+
+	startDate = startDate.Truncate(interval)
+	opt.Start = startDate
 	upTo := time.Now().Truncate(interval)
-	if upTo.Equal(*startDate) {
+
+	if upTo.Equal(startDate) {
 		return nil
 	}
-	for {
+	partitions := preparePartition(startDate, upTo, interval, partitionSize)
+	for _, p := range partitions {
+		opt := coinpaprika.TickersHistoricalOptions{
+			Interval: cl.Interval,
+			Start:    p.start,
+			End:      p.end,
+		}
 		tt, err := cl.CoinpaprikaClient.Tickers.GetHistoricalTickersByID(*c.ID, &opt)
 		if err != nil {
-			return fmt.Errorf("get historical tickers failure: %w", err)
+			return fmt.Errorf("get historical tickers for id %s failure: %w", *c.ID, err)
 		}
 		res <- tt
-		if len(tt) == 0 || !tt[len(tt)-1].Timestamp.Before(upTo) {
-			break
-		}
 	}
 	if cl.Backend != nil {
 		err = cl.Backend.Set(ctx, key, cl.ID(), upTo.Format(time.RFC3339))
@@ -94,4 +101,33 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	return nil
+}
+
+type partition struct {
+	start, end time.Time
+}
+
+func preparePartition(start, stop time.Time, interval time.Duration, partitionSize int) []partition {
+	var result []partition
+
+	partitionDuration := interval * time.Duration(partitionSize)
+	if start.Add(partitionDuration).After(stop) {
+		return append(result, partition{start: start, end: stop})
+	}
+
+	partitions := (stop.Unix() - start.Unix()) / int64(partitionDuration.Seconds())
+
+	var i int64
+	for i < partitions {
+		result = append(result, partition{
+			start: start.Add(partitionDuration * time.Duration(i)),
+			end:   start.Add(partitionDuration * time.Duration(i+1)),
+		})
+		i++
+	}
+
+	if (stop.Unix()-start.Unix())%int64(partitionDuration.Seconds()) != 0 {
+		result = append(result, partition{start: start.Add(partitionDuration * time.Duration(partitions)), end: stop})
+	}
+	return result
 }

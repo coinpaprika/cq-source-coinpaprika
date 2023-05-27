@@ -42,11 +42,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	retryClient := retryablehttp.NewClient()
-	retryClient.HTTPClient.Timeout = 15 * time.Second
+	retryClient.HTTPClient.Timeout = 5 * time.Second
 	retryClient.RetryMax = 3
 	retryClient.RetryWaitMin = 1 * time.Second
-	retryClient.RetryWaitMax = 10 * time.Second
-	// retryClient.Logger = nil
+	retryClient.RetryWaitMax = 5 * time.Second
 
 	cc := coinpaprika.NewClient(retryClient.StandardClient(), cOpts...)
 
