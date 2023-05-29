@@ -31,13 +31,13 @@ spec:
     access_token: "${COINPAPRIKA_API_TOKEN}"
 ```
 
-| Spec fields | Description | Optional | 
-|-|-|-|
-| start_date | Starting date for synchronizing data | NO |
-| interval | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) | NO |
-| access_token| Coinpaprika API token| YES |
+| Spec fields  | Description                                                                                                                | Optional | 
+|--------------|----------------------------------------------------------------------------------------------------------------------------|----------|
+| start_date   | Starting date for synchronizing data                                                                                       | NO       |
+| interval     | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) | NO       |
+| access_token | Coinpaprika API token                                                                                                      | YES      |
 
-The Coinpaprika plugin supports incremental syncing for historical tickers, only new tickers will be fetched. This is done by storing last timestamp of fetched ticker in Couldquery backed. To enable this, `backend` option must be set in the spec. 
+The Coinpaprika plugin supports incremental syncing for historical tickers, only new tickers will be fetched. This is done by storing last timestamp of fetched ticker in Cloudquery backed. To enable this, `backend` option must be set in the spec. 
 
 Due to large number of coins and tickers in Coinpaprika, consider to limit `concurrency` accordingly to machine spec. Good starting point is 100.
 

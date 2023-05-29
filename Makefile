@@ -4,7 +4,10 @@ test:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --timeout 10m
+	@if test ! -e ./bin/golangci-lint; then \
+    	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh; \
+    fi
+	@./bin/golangci-lint run --timeout 3m
 
 .PHONY: gen-docs
 gen-docs:

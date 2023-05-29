@@ -32,7 +32,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		return nil, fmt.Errorf("failed to unmarshal plugin spec: %w", err)
 	}
 
-	cOpts := []coinpaprika.ClientOptions{}
+	var cOpts []coinpaprika.ClientOptions
 	if pluginSpec.AccessToken != "" {
 		cOpts = append(cOpts, coinpaprika.WithAPIKey(pluginSpec.AccessToken))
 	}
