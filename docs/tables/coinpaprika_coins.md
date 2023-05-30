@@ -13,31 +13,31 @@ The following tables depend on coinpaprika_coins:
 
 ## Columns
 
-| Name          | Type          |
-| ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|name|String|
-|symbol|String|
-|rank|Int|
-|is_new|Bool|
-|is_active|Bool|
-|type|String|
-|parent|JSON|
-|open_source|Bool|
-|hardware_wallet|Bool|
-|description|String|
-|message|String|
-|started_at|String|
-|development_status|String|
-|proof_type|String|
-|org_structure|String|
-|hash_algorithm|String|
-|whitepaper|JSON|
-|links|JSON|
-|links_extended|JSON|
-|tags|JSON|
-|team|JSON|
+| Name               | Type      |
+|--------------------|-----------|
+| _cq_source_name    | String    |
+| _cq_sync_time      | Timestamp |
+| _cq_id             | UUID      |
+| _cq_parent_id      | UUID      |
+| id (PK)            | String    |
+| name               | String    |
+| symbol             | String    |
+| rank               | Int       |
+| is_new             | Bool      |
+| is_active          | Bool      |
+| type               | String    |
+| parent             | JSON      |
+| open_source        | Bool      |
+| hardware_wallet    | Bool      |
+| description        | String    |
+| message            | String    |
+| started_at         | String    |
+| development_status | String    |
+| proof_type         | String    |
+| org_structure      | String    |
+| hash_algorithm     | String    |
+| whitepaper         | JSON      |
+| links              | JSON      |
+| links_extended     | JSON      |
+| tags               | JSON      |
+| team               | JSON      |
