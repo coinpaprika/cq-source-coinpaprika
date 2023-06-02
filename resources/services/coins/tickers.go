@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
+	"github.com/ryanuber/go-glob"
 )
 
 const (
@@ -48,9 +49,10 @@ func TickersTable() *schema.Table {
 func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := parent.Item.(*coinpaprika.Coin)
 	cl := meta.(*client.Client)
-
+	if len(cl.Tickers) > 0 && !filterTickers(cl.Tickers, *c.ID) {
+		return nil
+	}
 	startDate := cl.StartDate
-
 	key := fmt.Sprintf(stateKeyTpl, *c.ID)
 	if cl.Backend != nil {
 		value, err := cl.Backend.Get(ctx, key, cl.ID())
@@ -75,7 +77,7 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 	startDate = startDate.Truncate(interval)
 	opt.Start = startDate
-	upTo := time.Now().Truncate(interval)
+	upTo := cl.EndDate.Truncate(interval)
 
 	if upTo.Equal(startDate) {
 		return nil
@@ -101,6 +103,15 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	return nil
+}
+
+func filterTickers(tickers []string, id string) bool {
+	for _, t := range tickers {
+		if glob.Glob(t, id) {
+			return true
+		}
+	}
+	return false
 }
 
 type partition struct {

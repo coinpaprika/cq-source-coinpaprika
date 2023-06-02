@@ -17,7 +17,9 @@ import (
 type TestOptions struct {
 	Backend   backend.Backend
 	StartTime time.Time
+	EndTime   time.Time
 	Interval  string
+	Tickers   []string
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) CoinpaprikaServices, opts TestOptions) {
@@ -35,7 +37,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 			CoinpaprikaClient: builder(t, ctrl),
 			Backend:           opts.Backend,
 			StartDate:         opts.StartTime,
+			EndDate:           opts.EndTime,
 			Interval:          opts.Interval,
+			Tickers:           opts.Tickers,
 		}, nil
 	}
 	p := source.NewPlugin(
