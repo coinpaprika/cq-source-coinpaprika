@@ -1,4 +1,4 @@
-module github.com/coinpaprika/cloudquery-source-coinpaprika
+module github.com/coinpaprika/cq-source-coinpaprika
 
 go 1.20
 

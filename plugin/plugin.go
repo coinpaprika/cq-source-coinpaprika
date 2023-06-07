@@ -3,9 +3,9 @@ package plugin
 import (
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/client"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/resources/services/coins"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/resources/services/exchanges"
+	"github.com/coinpaprika/cq-source-coinpaprika/client"
+	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/coins"
+	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/exchanges"
 )
 
 var (

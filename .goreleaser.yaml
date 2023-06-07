@@ -8,7 +8,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/coinpaprika/cloudquery-source-coinpaprika/plugin.Version={{.Version}}
+      - -s -w -X github.com/coinpaprika/cq-source-coinpaprika/plugin.Version={{.Version}}
     goos:
       - windows
       - linux

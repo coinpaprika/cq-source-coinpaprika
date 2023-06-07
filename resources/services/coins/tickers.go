@@ -7,8 +7,8 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/client"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
+	"github.com/coinpaprika/cq-source-coinpaprika/client"
 	"github.com/ryanuber/go-glob"
 )
 

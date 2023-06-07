@@ -15,7 +15,7 @@
 .DS_Store
 .idea
 
-cloudquery-source-coinpaprika
+cq-source-coinpaprika
 .cq
 coinpaprika.yml
 

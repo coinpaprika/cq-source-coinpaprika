@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v2/faker"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/client"
-	"github.com/coinpaprika/cloudquery-source-coinpaprika/client/mock"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
+	"github.com/coinpaprika/cq-source-coinpaprika/client"
+	"github.com/coinpaprika/cq-source-coinpaprika/client/mock"
 	"github.com/golang/mock/gomock"
 )
 
