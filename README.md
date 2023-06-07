@@ -69,7 +69,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
     ```
 
 | Spec fields   | Description                                                                                                                | Default value | Optional |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+|---------------|----------------------------------------------------------------------------------------------------------------------------|---------------|----------|
 | start_date    | Start date for synchronizing data in RFC3339 format.                                                                       |               | NO       |
 | end_date      | End date for synchronizing data in RFC3339 format.                                                                         | NOW           | YES      |
 | interval      | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) |               | NO       |
@@ -78,7 +78,6 @@ The following source configuration file will sync to a PostgreSQL database. See 
 | rate_duration | Unit of rate in time of request rate, go duration format.                                                                  | 30            | YES      |
 | rate_number   | Number of request in `rate_duration`.                                                                                      | 30            | YES      |
 | tickers       | list of globe pattern ticker ids to synchronize.                                                                           | *             | YES      |
-
 
 
 The Coinpaprika plugin supports incremental syncing for historical tickers, only new tickers will be fetched. This is done by storing last timestamp of fetched ticker in CloudQuery backend. To enable this, `backend` option must be set in the spec. 
