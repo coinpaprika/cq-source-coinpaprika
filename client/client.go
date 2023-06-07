@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/rs/zerolog"
 )
 
@@ -18,7 +17,9 @@ type Client struct {
 	CoinpaprikaClient CoinpaprikaServices
 	Backend           Backend
 	StartDate         time.Time
+	EndDate           time.Time
 	Interval          string
+	Tickers           []string
 }
 
 func (c *Client) ID() string {
@@ -41,14 +42,24 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		return nil, fmt.Errorf("failed to parse startDate from spec: %w", err)
 	}
 
-	retryClient := retryablehttp.NewClient()
-	retryClient.HTTPClient.Timeout = 5 * time.Second
-	retryClient.RetryMax = 3
-	retryClient.RetryWaitMin = 1 * time.Second
-	retryClient.RetryWaitMax = 5 * time.Second
-	retryClient.Logger = nil
-
-	cc := coinpaprika.NewClient(retryClient.StandardClient(), cOpts...)
+	endDate := time.Now()
+	if pluginSpec.EndDate != "" {
+		endDate, err = time.Parse(time.RFC3339, pluginSpec.EndDate)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse startDate from spec: %w", err)
+		}
+	}
+	rateNumber := 30
+	rateDuration := time.Second
+	if pluginSpec.RateDuration != "" && pluginSpec.RateNumber != 0 {
+		rateNumber = pluginSpec.RateNumber
+		rateDuration, err = time.ParseDuration(pluginSpec.RateDuration)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse rate duration from spec: %w", err)
+		}
+	}
+	
+	cc := coinpaprika.NewClient(NewHttpClient(logger, pluginSpec.ApiDebug, rateNumber, rateDuration), cOpts...)
 
 	return &Client{
 		Logger: logger,
@@ -59,6 +70,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		},
 		Backend:   opts.Backend,
 		StartDate: startDate,
+		EndDate:   endDate,
 		Interval:  pluginSpec.Interval,
+		Tickers:   pluginSpec.Tickers,
 	}, nil
 }

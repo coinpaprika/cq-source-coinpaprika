@@ -15,31 +15,61 @@ A Coinpaprika source plugin for CloudQuery that loads data from Coinpaprika API 
 
 The following source configuration file will sync to a PostgreSQL database. See [the CloudQuery Quickstart](https://www.cloudquery.io/docs/quickstart) for more information on how to configure the source and destination.
 
-```yaml
-kind: source
-spec:
-  name: "coinpaprika"
-  path: "coinpaprika/coinpaprika"
-  version: "${VERSION}"
-  concurrency: 100
-  backend: local
-  destinations:
-    - "postgresql"
-  spec: 
-    start_date: "2023-05-15T08:00:00Z"
-    interval: "1h" 
-    access_token: "${COINPAPRIKA_API_TOKEN}"
-```
+1.  With api token rate limited for `Bussines` plan (3 000 000 calls/month). Only bitcoin tickers.
+    ```yaml
+    kind: source
+    spec:
+      name: "coinpaprika"
+      path: "coinpaprika/coinpaprika"
+      version: "1.0.0"
+      backend: local
+      destinations:
+        - "postgresql"
+      spec: 
+        start_date: "2023-05-15T08:00:00Z"
+        interval: 5m 
+        access_token: "${COINPAPRIKA_API_TOKEN}"
+        api_debug: true
+        rate_duration: 720h
+        rate_number: 3000000
+        tickers: 
+          ["*-bitcoin"]
+    ```
+2. Without token, `Free` plan (25 000 calls/month) minimal interval 1h, see  [available history range depending on the selected API plan](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById). Only bitcoin tickers.
 
-| Spec fields  | Description                                                                                                                | Optional | 
-|--------------|----------------------------------------------------------------------------------------------------------------------------|----------|
-| start_date   | Starting date for synchronizing data                                                                                       | NO       |
-| interval     | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) | NO       |
-| access_token | Coinpaprika API token                                                                                                      | YES      |
+    ```yaml
+    kind: source
+    spec:
+      name: "coinpaprika"
+      path: "coinpaprika/coinpaprika"
+      version: "1.0.0"
+      backend: local
+      destinations:
+        - "postgresql"
+      spec: 
+        start_date: "2023-05-15T08:00:00Z"
+        interval: 1h 
+        rate_duration: 720h
+        rate_number: 25000
+        tickers: 
+          ["*-bitcoin"]
+    ```
 
-The Coinpaprika plugin supports incremental syncing for historical tickers, only new tickers will be fetched. This is done by storing last timestamp of fetched ticker in Cloudquery backed. To enable this, `backend` option must be set in the spec. 
+| Spec fields   | Description                                                                                                                | Default value | Optional |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| start_date    | Start date for synchronizing data in RFC3339 format.                                                                       |               | NO       |
+| end_date      | End date for synchronizing data in RFC3339 format.                                                                         | NOW           | YES      |
+| interval      | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) |               | NO       |
+| access_token  | Coinpaprika API token.                                                                                                     |               | YES      |
+| api_debug     | Enable request log.                                                                                                        | false         | YES      |
+| rate_duration | Unit of rate in time of request rate, go duration format.                                                                  | 30            | YES      |
+| rate_number   | Number of request in `rate_duration`.                                                                                      | 30            | YES      |
+| tickers       | list of globe pattern ticker ids to synchronize.                                                                           | *             | YES      |
 
-Due to large number of coins and tickers in Coinpaprika, consider to limit `concurrency` accordingly to machine spec. Good starting point is 100.
+
+
+The Coinpaprika plugin supports incremental syncing for historical tickers, only new tickers will be fetched. This is done by storing last timestamp of fetched ticker in CloudQuery backend. To enable this, `backend` option must be set in the spec. 
+
 
 ## Development
 

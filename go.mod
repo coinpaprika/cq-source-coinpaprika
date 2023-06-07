@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -41,11 +42,13 @@ require (
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
+	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
+	go.uber.org/ratelimit v0.2.0
 	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
