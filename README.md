@@ -52,8 +52,8 @@ The following source configuration file will sync to a PostgreSQL database. See 
         - "sqlite"
       spec:
         api_debug: true
-        start_date: "2023-05-15T08:00:00Z"
-        interval: 1h
+        start_date: "2023-05-15T08:00:00Z" # for free plan up to 1 year ago
+        interval: 24h
         rate_duration: 720h
         rate_number: 25000
         tickers:
