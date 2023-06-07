@@ -21,7 +21,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
     spec:
       name: "coinpaprika"
       path: "coinpaprika/coinpaprika"
-      version: "1.0.0"
+      version: "v1.0.0"
       backend: local
       tables:
         [ "*" ]
