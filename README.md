@@ -15,7 +15,38 @@ A Coinpaprika source plugin for CloudQuery that loads data from Coinpaprika API 
 
 The following source configuration file will sync to a PostgreSQL database. See [the CloudQuery Quickstart](https://www.cloudquery.io/docs/quickstart) for more information on how to configure the source and destination.
 
-1.  With api token rate limited for `Bussines` plan (3 000 000 calls/month). Only bitcoin tickers.
+1. Without API token, `Free` plan (25 000 calls/month) minimal interval 1h, see  [available history range depending on the selected API plan](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById).
+
+     ```yaml
+     kind: source
+     spec:
+       name: "coinpaprika"
+       path: "coinpaprika/coinpaprika"
+       version: "v1.0.0"
+       backend: local
+       tables:
+         [ "*" ]
+       destinations:
+         - "sqlite"
+       spec:
+         api_debug: true
+         start_date: "2023-05-15T08:00:00Z" # for free plan up to 1 year ago
+         interval: 24h
+         rate_duration: 720h
+         rate_number: 25000
+         tickers:
+           ["btc-bitcoin"]
+     ---
+     kind: destination
+     spec:
+       name: sqlite
+       path: cloudquery/sqlite
+       version: "v1.2.1"
+       spec:
+         connection_string: ./db.sql    
+     ```
+
+2. With API token rate limited for `Bussines` plan (3 000 000 calls/month).
     ```yaml
     kind: source
     spec:
@@ -36,36 +67,6 @@ The following source configuration file will sync to a PostgreSQL database. See 
         rate_number: 3000000
         tickers: 
           ["*-bitcoin", "eth-ethereum"]
-    ```
-2. Without token, `Free` plan (25 000 calls/month) minimal interval 1h, see  [available history range depending on the selected API plan](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById). Only bitcoin tickers.
-
-    ```yaml
-    kind: source
-    spec:
-      name: "coinpaprika"
-      path: "coinpaprika/coinpaprika"
-      version: "v1.0.0"
-      backend: local
-      tables:
-        [ "*" ]
-      destinations:
-        - "sqlite"
-      spec:
-        api_debug: true
-        start_date: "2023-05-15T08:00:00Z" # for free plan up to 1 year ago
-        interval: 24h
-        rate_duration: 720h
-        rate_number: 25000
-        tickers:
-          ["btc-bitcoin"]
-    ---
-    kind: destination
-    spec:
-      name: sqlite
-      path: cloudquery/sqlite
-      version: "v1.2.1"
-      spec:
-        connection_string: ./db.sql    
     ```
 
 | Spec fields   | Description                                                                                                                | Default value | Optional |
