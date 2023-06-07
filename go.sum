@@ -56,6 +56,8 @@ github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGX
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coinpaprika/coinpaprika-api-go-client/v2 v2.4.3 h1:ADMgXNJoitfQ9IEXRjc1grwHUzvChG+HbkC2N1afHHA=
 github.com/coinpaprika/coinpaprika-api-go-client/v2 v2.4.3/go.mod h1:Ja/jVGgMuFO73X8Y07MyRR3fUq9u2xvXToYxaId9hko=
+github.com/coinpaprika/cq-source-coinpaprika v0.0.3 h1:ok5VJMm6bu0Vybt+AJUBH7QQ44ljIALjQjSQGOv4PKM=
+github.com/coinpaprika/cq-source-coinpaprika v0.0.3/go.mod h1:nk8SyJClNli7hRVnoa8DIvkPDRACGg3unfflPvuzqrc=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

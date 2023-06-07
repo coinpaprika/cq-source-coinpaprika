@@ -1,4 +1,4 @@
-module github.com/coinpaprika/cq-source-coinpaprika
+module github.com/coinpaprika/cloudquery-source-coinpaprika
 
 go 1.20
 
@@ -6,6 +6,7 @@ require (
 	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/coinpaprika/coinpaprika-api-go-client/v2 v2.4.3
+	github.com/coinpaprika/cq-source-coinpaprika v0.0.3
 	github.com/golang/mock v1.5.0
 	github.com/rs/zerolog v1.29.0
 )

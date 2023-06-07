@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/coinpaprika/cloudquery-source-coinpaprika/client"
+	"github.com/coinpaprika/cloudquery-source-coinpaprika/client/mock"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
-	"github.com/coinpaprika/cq-source-coinpaprika/client"
-	"github.com/coinpaprika/cq-source-coinpaprika/client/mock"
 	"github.com/golang/mock/gomock"
 )
 
@@ -253,7 +253,7 @@ func TestCoinsWithBackend(t *testing.T) {
 	client.MockTestHelper(t, CoinsTable(), buildDeps, client.TestOptions{
 		Backend:   mbe,
 		StartTime: now.Add(-4 * time.Hour),
-		EndTime: now,
+		EndTime:   now,
 		Interval:  "1h"},
 	)
 }
