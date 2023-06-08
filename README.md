@@ -75,7 +75,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
 | start_date    | Start date for synchronizing data in RFC3339 format.                                                                       |               | NO       |
 | end_date      | End date for synchronizing data in RFC3339 format.                                                                         | NOW           | YES      |
 | interval      | Intervals for historic data [possible values](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById) |               | NO       |
-| access_token  | Coinpaprika API token.                                                                                                     |               | YES      |
+| access_token  | Coinpaprika [API token](https://coinpaprika.com/api).                                                                      |               | YES      |
 | api_debug     | Enable request log.                                                                                                        | false         | YES      |
 | rate_duration | Unit of rate in time of request rate, go duration format.                                                                  | 30            | YES      |
 | rate_number   | Number of request in `rate_duration`.                                                                                      | 30            | YES      |
