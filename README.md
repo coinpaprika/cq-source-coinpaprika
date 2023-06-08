@@ -9,6 +9,11 @@ A Coinpaprika source plugin for CloudQuery that loads data from [Coinpaprika API
 Coinpaprika is a leading cryptocurrency market data platform that offers users comprehensive insights into price data, 
 historical trends, market capitalization, trading volume, and other relevant metrics for numerous cryptocurrencies across hundreds of exchanges.
 
+## About CloudQuery
+
+CloudQuery is a powerful data integration and transformation tool designed for cloud-based environments. 
+It provides a streamlined approach to accessing, querying, and manipulating data from multiple sources, such as databases, APIs, and cloud services.
+
 ## Links
 
  - [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/quickstart)
