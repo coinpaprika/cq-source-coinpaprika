@@ -95,9 +95,9 @@ The Coinpaprika plugin supports incremental syncing for historical tickers, only
 
 ## Running
 ```bash
-  # https://www.cloudquery.io/docs
-  brew install cloudquery/tap/cloudquery 
-  cloudquery sync conf.yml
+# https://www.cloudquery.io/docs
+brew install cloudquery/tap/cloudquery 
+cloudquery sync conf.yml
 ```
 
 ## Development
