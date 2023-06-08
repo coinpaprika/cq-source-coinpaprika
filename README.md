@@ -3,7 +3,11 @@
 [![test](https://github.com/coinpaprika/cq-source-coinpaprika/actions/workflows/test.yaml/badge.svg)](https://github.com/coinpaprika/cq-source-coinpaprika/actions/workflows/test.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/coinpaprika/cq-source-coinpaprika)](https://goreportcard.com/report/github.com/coinpaprika/cq-source-coinpaprika)
 
-A Coinpaprika source plugin for CloudQuery that loads data from Coinpaprika API to any database, data warehouse or data lake supported by [CloudQuery](https://www.cloudquery.io/), such as PostgreSQL, BigQuery, Athena, and many more.
+A Coinpaprika source plugin for CloudQuery that loads data from [Coinpaprika API](https://api.coinpaprika.com) to any database, data warehouse or data lake supported by [CloudQuery](https://www.cloudquery.io/), such as PostgreSQL, BigQuery, Athena, and many more.
+
+## About Coinpaprika
+Coinpaprika is a leading cryptocurrency market data platform that offers users comprehensive insights into price data, 
+historical trends, market capitalization, trading volume, and other relevant metrics for numerous cryptocurrencies across hundreds of exchanges.
 
 ## Links
 
