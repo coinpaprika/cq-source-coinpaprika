@@ -1,4 +1,4 @@
-# CloudQuery coinpaprika Source Plugin
+# CloudQuery Coinpaprika Source Plugin
 
 [![test](https://github.com/coinpaprika/cq-source-coinpaprika/actions/workflows/test.yaml/badge.svg)](https://github.com/coinpaprika/cq-source-coinpaprika/actions/workflows/test.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/coinpaprika/cq-source-coinpaprika)](https://goreportcard.com/report/github.com/coinpaprika/cq-source-coinpaprika)
