@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 	"github.com/ryanuber/go-glob"
@@ -26,21 +27,17 @@ func TickersTable() *schema.Table {
 		Transform:     transformers.TransformWithStruct(&coinpaprika.TickerHistorical{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "timestamp",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Timestamp"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-					PrimaryKey:     true,
-				},
+				Name:           "timestamp",
+				Type:           arrow.BinaryTypes.String,
+				Resolver:       schema.PathResolver("Timestamp"),
+				IncrementalKey: true,
+				PrimaryKey:     true,
 			},
 		},
 	}
@@ -70,7 +67,7 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	opt := coinpaprika.TickersHistoricalOptions{}
 
 	opt.Interval = cl.Interval
-	interval, err := time.ParseDuration(cl.Interval)
+	interval, err := client.WithCustomDurations(time.ParseDuration)(cl.Interval)
 	if err != nil {
 		return fmt.Errorf("failed to parse interval: %w", err)
 	}

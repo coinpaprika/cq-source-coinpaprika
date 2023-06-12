@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/rs/zerolog"
 )
@@ -53,12 +53,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	rateDuration := time.Second
 	if pluginSpec.RateDuration != "" && pluginSpec.RateNumber != 0 {
 		rateNumber = pluginSpec.RateNumber
-		rateDuration, err = time.ParseDuration(pluginSpec.RateDuration)
+		rateDuration, err = WithCustomDurations(time.ParseDuration)(pluginSpec.RateDuration)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse rate duration from spec: %w", err)
 		}
 	}
-	
+
 	cc := coinpaprika.NewClient(NewHttpClient(logger, pluginSpec.ApiDebug, rateNumber, rateDuration), cOpts...)
 
 	return &Client{
