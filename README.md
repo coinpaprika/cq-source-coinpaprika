@@ -31,7 +31,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
      spec:
        name: "coinpaprika"
        path: "coinpaprika/coinpaprika"
-       version: "v1.0.0"
+       version: "v1.0.1"
        backend: local
        tables:
          [ "*" ]
@@ -41,7 +41,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
          api_debug: true
          start_date: "2023-05-15T08:00:00Z" # for free plan up to 1 year ago
          interval: 24h
-         rate_duration: 720h
+         rate_duration: 30d
          rate_number: 25000
          tickers:
            ["btc-bitcoin"]
@@ -50,7 +50,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
      spec:
        name: sqlite
        path: cloudquery/sqlite
-       version: "v1.2.1"
+       version: "v2.2.1"
        spec:
          connection_string: ./db.sql    
      ```
@@ -62,21 +62,29 @@ The following source configuration file will sync to a PostgreSQL database. See 
     spec:
       name: "coinpaprika"
       path: "coinpaprika/coinpaprika"
-      version: "v1.0.0"
+      version: "v1.0.1"
       backend: local
       tables:
         [ "*" ]
       destinations:
-        - "postgresql"
+        - "sqlite"
       spec: 
         start_date: "2023-05-15T08:00:00Z"
         interval: 5m 
         access_token: "${COINPAPRIKA_API_TOKEN}"
         api_debug: true
-        rate_duration: 720h
+        rate_duration: 30d
         rate_number: 3000000
         tickers: 
           ["*-bitcoin", "eth-ethereum"]
+    ---
+    kind: destination
+    spec:
+      name: sqlite
+      path: cloudquery/sqlite
+      version: "v2.2.1"
+      spec:
+        connection_string: ./db.sql 
     ```
 
 | Spec fields   | Description                                                                                                                | Default value | Optional |

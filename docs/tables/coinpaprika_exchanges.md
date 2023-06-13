@@ -8,25 +8,25 @@ The primary key for this table is **_cq_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|id|String|
-|name|String|
-|message|String|
-|description|String|
-|active|Bool|
-|website_status|Bool|
-|api_status|Bool|
-|markets_data_fetched|Bool|
-|rank|Int|
-|adjusted_rank|Int|
-|reported_rank|Int|
-|currencies|Int|
-|markets|Int|
-|adjusted_volume_24h_share|Float|
-|fiats|JSON|
-|quotes|JSON|
-|links|JSON|
-|last_updated|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|id|`utf8`|
+|name|`utf8`|
+|message|`utf8`|
+|description|`utf8`|
+|active|`bool`|
+|website_status|`bool`|
+|api_status|`bool`|
+|markets_data_fetched|`bool`|
+|rank|`int64`|
+|adjusted_rank|`int64`|
+|reported_rank|`int64`|
+|currencies|`int64`|
+|markets|`int64`|
+|adjusted_volume_24h_share|`float64`|
+|fiats|`json`|
+|quotes|`json`|
+|links|`json`|
+|last_updated|`utf8`|

@@ -8,8 +8,7 @@ import (
 
 // WithCustomDurations add custom intervals
 // parser:
-//   - d stands for day equal to 24h, days could only be
-//     prefixed with integer number
+//   - d (day) equal to 24h only integer value
 func WithCustomDurations(func(s string) (time.Duration, error)) func(s string) (time.Duration, error) {
 	return func(s string) (time.Duration, error) {
 		re := regexp.MustCompile(`([-+]?[0-9]+)d`)
