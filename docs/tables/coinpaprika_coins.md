@@ -15,29 +15,29 @@ The following tables depend on coinpaprika_coins:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|name|String|
-|symbol|String|
-|rank|Int|
-|is_new|Bool|
-|is_active|Bool|
-|type|String|
-|parent|JSON|
-|open_source|Bool|
-|hardware_wallet|Bool|
-|description|String|
-|message|String|
-|started_at|String|
-|development_status|String|
-|proof_type|String|
-|org_structure|String|
-|hash_algorithm|String|
-|whitepaper|JSON|
-|links|JSON|
-|links_extended|JSON|
-|tags|JSON|
-|team|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|symbol|`utf8`|
+|rank|`int64`|
+|is_new|`bool`|
+|is_active|`bool`|
+|type|`utf8`|
+|parent|`json`|
+|open_source|`bool`|
+|hardware_wallet|`bool`|
+|description|`utf8`|
+|message|`utf8`|
+|started_at|`utf8`|
+|development_status|`utf8`|
+|proof_type|`utf8`|
+|org_structure|`utf8`|
+|hash_algorithm|`utf8`|
+|whitepaper|`json`|
+|links|`json`|
+|links_extended|`json`|
+|tags|`json`|
+|team|`json`|
