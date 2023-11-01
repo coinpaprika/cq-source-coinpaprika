@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
@@ -16,16 +15,8 @@ func CoinsTable() *schema.Table {
 		Name:        "coinpaprika_coins",
 		Description: "https://api.coinpaprika.com/#tag/Coins/paths/~1coins/get",
 		Resolver:    fetchCoins,
-		Columns: []schema.Column{
-			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ID"),
-				PrimaryKey: true,
-			},
-		},
-		Relations: []*schema.Table{TickersTable()},
-		Transform: transformers.TransformWithStruct(&coinpaprika.Coin{}),
+		Relations:   []*schema.Table{tickersTable()},
+		Transform:   transformers.TransformWithStruct(&coinpaprika.Coin{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

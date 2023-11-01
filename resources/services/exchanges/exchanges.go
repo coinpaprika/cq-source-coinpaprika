@@ -14,7 +14,7 @@ func ExchangesTable() *schema.Table {
 	return &schema.Table{
 		Name:      "coinpaprika_exchanges",
 		Resolver:  fetchExchanges,
-		Transform: transformers.TransformWithStruct(&coinpaprika.Exchange{}),
+		Transform: transformers.TransformWithStruct(&coinpaprika.Exchange{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

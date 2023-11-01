@@ -18,7 +18,7 @@ const (
 	partitionSize = 1000
 )
 
-func TickersTable() *schema.Table {
+func tickersTable() *schema.Table {
 	return &schema.Table{
 		Name:          "coinpaprika_tickers",
 		Description:   "https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById",
@@ -27,14 +27,14 @@ func TickersTable() *schema.Table {
 		Transform:     transformers.TransformWithStruct(&coinpaprika.TickerHistorical{}),
 		Columns: []schema.Column{
 			{
-				Name:       "id",
+				Name:       "coin_id",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("id"),
 				PrimaryKey: true,
 			},
 			{
 				Name:           "timestamp",
-				Type:           arrow.BinaryTypes.String,
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
 				Resolver:       schema.PathResolver("Timestamp"),
 				IncrementalKey: true,
 				PrimaryKey:     true,

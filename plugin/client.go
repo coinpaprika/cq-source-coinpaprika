@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/coins"
 	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/exchanges"
@@ -85,9 +86,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 }
 
 func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
-	tables := schema.Tables{
-		coins.CoinsTable(),
-		exchanges.ExchangesTable(),
+	tables, err := getTables()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tables: %w", err)
 	}
 
 	if opts.NoConnection {
@@ -110,4 +111,18 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 			scheduler.WithLogger(logger),
 		),
 	}, nil
+}
+
+func getTables() (schema.Tables, error) {
+	tables := schema.Tables{
+		coins.CoinsTable(),
+		exchanges.ExchangesTable(),
+	}
+	if err := transformers.TransformTables(tables); err != nil {
+		return nil, err
+	}
+	for _, table := range tables {
+		schema.AddCqIDs(table)
+	}
+	return tables, nil
 }
