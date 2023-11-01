@@ -51,18 +51,16 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	startDate := cl.StartDate
 	key := fmt.Sprintf(stateKeyTpl, *c.ID)
-	if cl.Backend != nil {
-		value, err := cl.Backend.GetKey(ctx, key)
+	value, err := cl.Backend.GetKey(ctx, key)
+	if err != nil {
+		return fmt.Errorf("failed to retrieve state from backend: %w", err)
+	}
+	if value != "" {
+		start, err := time.Parse(time.RFC3339, value)
 		if err != nil {
-			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+			return fmt.Errorf("failed to parse timestamp  from backend: %w", err)
 		}
-		if value != "" {
-			start, err := time.Parse(time.RFC3339, value)
-			if err != nil {
-				return fmt.Errorf("failed to parse timestamp  from backend: %w", err)
-			}
-			startDate = start
-		}
+		startDate = start
 	}
 	opt := coinpaprika.TickersHistoricalOptions{}
 
@@ -92,13 +90,10 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		}
 		res <- tt
 	}
-	if cl.Backend != nil {
-		err = cl.Backend.SetKey(ctx, key, upTo.Format(time.RFC3339))
-		if err != nil {
-			return fmt.Errorf("failed to save state to backend: %w", err)
-		}
+	err = cl.Backend.SetKey(ctx, key, upTo.Format(time.RFC3339))
+	if err != nil {
+		return fmt.Errorf("failed to save state to backend: %w", err)
 	}
-
 	return nil
 }
 
