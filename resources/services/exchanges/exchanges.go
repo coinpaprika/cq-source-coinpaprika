@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 )
@@ -18,7 +18,7 @@ func ExchangesTable() *schema.Table {
 	}
 }
 
-func fetchExchanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchExchanges(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	exchanges, err := cl.CoinpaprikaClient.Exchanges.List(nil)
 	if err != nil {

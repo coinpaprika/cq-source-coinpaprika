@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 	"github.com/coinpaprika/cq-source-coinpaprika/client/mock"
@@ -248,12 +248,13 @@ func TestCoinsWithBackend(t *testing.T) {
 	}
 	ctrl := gomock.NewController(t)
 	mbe := mock.NewMockBackend(ctrl)
-	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), "coinpaprika").Return(now.Add(-2*time.Hour).Format(time.RFC3339), nil)
-	mbe.EXPECT().Set(gomock.Any(), gomock.Any(), "coinpaprika", now.Format(time.RFC3339)).Return(nil)
+	mbe.EXPECT().GetKey(gomock.Any(), gomock.Any()).Return(now.Add(-2*time.Hour).Format(time.RFC3339), nil)
+	mbe.EXPECT().SetKey(gomock.Any(), gomock.Any(), now.Format(time.RFC3339)).Return(nil)
+	mbe.EXPECT().Flush(gomock.Any()).MinTimes(1).Return(nil)
 	client.MockTestHelper(t, CoinsTable(), buildDeps, client.TestOptions{
 		Backend:   mbe,
 		StartTime: now.Add(-4 * time.Hour),
 		EndTime:   now,
-		Interval:  "1h"},
-	)
+		Interval:  "1h",
+	})
 }

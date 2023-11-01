@@ -2,20 +2,21 @@ package client
 
 import (
 	"context"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
 
 type TestOptions struct {
-	Backend   backend.Backend
+	Backend   state.Client
 	StartTime time.Time
 	EndTime   time.Time
 	Interval  string
@@ -23,7 +24,6 @@ type TestOptions struct {
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) CoinpaprikaServices, opts TestOptions) {
-	version := "vDev"
 	table.IgnoreInTests = false
 	t.Helper()
 	ctrl := gomock.NewController(t)
@@ -31,30 +31,23 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		return &Client{
-			Logger:            l,
-			CoinpaprikaClient: builder(t, ctrl),
-			Backend:           opts.Backend,
-			StartDate:         opts.StartTime,
-			EndDate:           opts.EndTime,
-			Interval:          opts.Interval,
-			Tickers:           opts.Tickers,
-		}, nil
+	client := &Client{
+		CoinpaprikaClient: builder(t, ctrl),
+		Backend:           opts.Backend,
+		StartDate:         opts.StartTime,
+		EndDate:           opts.EndTime,
+		Interval:          opts.Interval,
+		Tickers:           opts.Tickers,
 	}
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+
+	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), client, tables)
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }

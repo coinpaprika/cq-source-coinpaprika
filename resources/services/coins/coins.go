@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/coinpaprika/cq-source-coinpaprika/client"
 )
@@ -29,7 +29,7 @@ func CoinsTable() *schema.Table {
 	}
 }
 
-func fetchCoins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCoins(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	coins, err := cl.CoinpaprikaClient.Coins.List()
 	if err != nil {

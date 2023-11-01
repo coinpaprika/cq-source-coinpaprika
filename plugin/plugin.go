@@ -1,25 +1,22 @@
 package plugin
 
 import (
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/coinpaprika/cq-source-coinpaprika/client"
-	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/coins"
-	"github.com/coinpaprika/cq-source-coinpaprika/resources/services/exchanges"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var (
+	Kind    = "source"
+	Team    = "coinpaprika"
+	Name    = "coinpaprika-coinpaprika"
 	Version = "development"
 )
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
-		"coinpaprika-coinpaprika",
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
+		Name,
 		Version,
-		schema.Tables{
-			coins.CoinsTable(),
-			exchanges.ExchangesTable(),
-		},
-		client.New,
+		Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
