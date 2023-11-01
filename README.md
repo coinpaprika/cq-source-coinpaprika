@@ -31,8 +31,10 @@ The following source configuration file will sync to a PostgreSQL database. See 
      spec:
        name: "coinpaprika"
        path: "coinpaprika/coinpaprika"
-       version: "v1.0.1"
-       backend: local
+       version: "v2.0.0"
+       backend_options:
+         table_name: "cq_state_coinpaprika"
+         connection: "@@plugins.sqlite.connection"
        tables:
          [ "*" ]
        destinations:
@@ -50,7 +52,8 @@ The following source configuration file will sync to a PostgreSQL database. See 
      spec:
        name: sqlite
        path: cloudquery/sqlite
-       version: "v2.2.1"
+       registry: cloudquery
+       version: "v2.4.15"
        spec:
          connection_string: ./db.sql    
      ```
@@ -62,8 +65,10 @@ The following source configuration file will sync to a PostgreSQL database. See 
     spec:
       name: "coinpaprika"
       path: "coinpaprika/coinpaprika"
-      version: "v1.0.1"
-      backend: local
+      version: "v2.0.0"
+      backend_options:
+        table_name: "cq_state_coinpaprika"
+        connection: "@@plugins.sqlite.connection"
       tables:
         [ "*" ]
       destinations:
@@ -82,7 +87,8 @@ The following source configuration file will sync to a PostgreSQL database. See 
     spec:
       name: sqlite
       path: cloudquery/sqlite
-      version: "v2.2.1"
+      registry: cloudquery
+      version: "v2.4.15"
       spec:
         connection_string: ./db.sql 
     ```

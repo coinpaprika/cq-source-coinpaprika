@@ -1,6 +1,6 @@
 module github.com/coinpaprika/cq-source-coinpaprika
 
-go 1.21.1
+go 1.21.3
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
