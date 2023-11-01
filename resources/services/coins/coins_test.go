@@ -250,7 +250,6 @@ func TestCoinsWithBackend(t *testing.T) {
 	mbe := mock.NewMockBackend(ctrl)
 	mbe.EXPECT().GetKey(gomock.Any(), gomock.Any()).Return(now.Add(-2*time.Hour).Format(time.RFC3339), nil)
 	mbe.EXPECT().SetKey(gomock.Any(), gomock.Any(), now.Format(time.RFC3339)).Return(nil)
-	mbe.EXPECT().Flush(gomock.Any()).MinTimes(1).Return(nil)
 	client.MockTestHelper(t, CoinsTable(), buildDeps, client.TestOptions{
 		Backend:   mbe,
 		StartTime: now.Add(-4 * time.Hour),

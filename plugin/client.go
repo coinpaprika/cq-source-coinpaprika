@@ -21,18 +21,15 @@ import (
 const maxMsgSize = 100 * 1024 * 1024 // 100 MiB
 
 type Client struct {
-	logger      zerolog.Logger
-	config      client.Spec
-	backendConn *grpc.ClientConn
-	scheduler   *scheduler.Scheduler
-	tables      schema.Tables
+	logger    zerolog.Logger
+	config    client.Spec
+	options   plugin.NewClientOptions
+	scheduler *scheduler.Scheduler
+	tables    schema.Tables
 	plugin.UnimplementedDestination
 }
 
 func (c *Client) Close(_ context.Context) error {
-	if c.backendConn != nil {
-		return c.backendConn.Close()
-	}
 	return nil
 }
 
@@ -45,18 +42,18 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
+
 	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}
 
-	var stateClient state.Client
-	if options.BackendOptions == nil {
-		c.logger.Info().Msg("No backend options provided, using no state backend")
-		stateClient = &state.NoOpClient{}
-		c.backendConn = nil
-	} else {
-		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
+	stateClient := state.Client(&state.NoOpClient{})
+	if options.BackendOptions != nil {
+		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
 				grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -66,7 +63,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
-		stateClient, err = state.NewClient(ctx, c.backendConn, options.BackendOptions.TableName)
+		stateClient, err = state.NewClient(ctx, conn, options.BackendOptions.TableName)
 		if err != nil {
 			return fmt.Errorf("failed to create state client: %w", err)
 		}
@@ -93,8 +90,9 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 
 	if opts.NoConnection {
 		return &Client{
-			logger: logger,
-			tables: tables,
+			options: opts,
+			logger:  logger,
+			tables:  tables,
 		}, nil
 	}
 
@@ -104,9 +102,10 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 	}
 
 	return &Client{
-		logger: logger,
-		config: config,
-		tables: tables,
+		options: opts,
+		logger:  logger,
+		config:  config,
+		tables:  tables,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
 		),

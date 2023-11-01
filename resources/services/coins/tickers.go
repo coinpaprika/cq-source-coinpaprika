@@ -97,10 +97,6 @@ func fetchTickers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		if err != nil {
 			return fmt.Errorf("failed to save state to backend: %w", err)
 		}
-		err = cl.Backend.Flush(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to flush state backend: %w", err)
-		}
 	}
 
 	return nil

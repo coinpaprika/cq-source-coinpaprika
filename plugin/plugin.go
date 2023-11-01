@@ -7,7 +7,7 @@ import (
 var (
 	Kind    = "source"
 	Team    = "coinpaprika"
-	Name    = "coinpaprika-coinpaprika"
+	Name    = "coinpaprika"
 	Version = "development"
 )
 
