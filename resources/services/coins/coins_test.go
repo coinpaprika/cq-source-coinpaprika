@@ -1,6 +1,7 @@
 package coins
 
 import (
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"testing"
 	"time"
 
@@ -50,6 +51,7 @@ func TestCoins(t *testing.T) {
 		EndTime:   now,
 		Interval:  "1h",
 		Tickers:   []string{"*"},
+		Backend:   state.Client(&state.NoOpClient{}),
 	})
 }
 
@@ -99,6 +101,7 @@ func TestCoinsFilterTicker(t *testing.T) {
 		EndTime:   now,
 		Interval:  "1h",
 		Tickers:   []string{"*-bitcoin"},
+		Backend:   state.Client(&state.NoOpClient{}),
 	})
 }
 
@@ -148,6 +151,7 @@ func TestCoinsTwoPages(t *testing.T) {
 		StartTime: now.Add(-1500 * time.Minute),
 		EndTime:   now,
 		Interval:  "1m",
+		Backend:   state.Client(&state.NoOpClient{}),
 	})
 }
 
@@ -212,6 +216,7 @@ func TestCoinsThreePages(t *testing.T) {
 		StartTime: now.Add(-3000 * time.Minute),
 		EndTime:   now,
 		Interval:  "1m",
+		Backend:   state.Client(&state.NoOpClient{}),
 	})
 }
 
