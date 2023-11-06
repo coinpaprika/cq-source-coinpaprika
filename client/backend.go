@@ -1,7 +1,7 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/v3/backend"
+import "github.com/cloudquery/plugin-sdk/v4/state"
 
 type Backend interface {
-	backend.Backend
+	state.Client
 }

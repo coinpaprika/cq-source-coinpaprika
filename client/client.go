@@ -1,21 +1,18 @@
 package client
 
 import (
-	"context"
 	"fmt"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/coinpaprika/coinpaprika-api-go-client/v2/coinpaprika"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	Logger            zerolog.Logger
 	CoinpaprikaClient CoinpaprikaServices
-	Backend           Backend
+	Backend           state.Client
 	StartDate         time.Time
 	EndDate           time.Time
 	Interval          string
@@ -26,13 +23,7 @@ func (c *Client) ID() string {
 	return "coinpaprika"
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var pluginSpec Spec
-
-	if err := s.UnmarshalSpec(&pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal plugin spec: %w", err)
-	}
-
+func New(logger zerolog.Logger, pluginSpec Spec, backend state.Client) (schema.ClientMeta, error) {
 	var cOpts []coinpaprika.ClientOptions
 	if pluginSpec.AccessToken != "" {
 		cOpts = append(cOpts, coinpaprika.WithAPIKey(pluginSpec.AccessToken))
@@ -62,13 +53,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	cc := coinpaprika.NewClient(NewHttpClient(logger, pluginSpec.ApiDebug, rateNumber, rateDuration), cOpts...)
 
 	return &Client{
-		Logger: logger,
 		CoinpaprikaClient: CoinpaprikaServices{
 			Tickers:   &cc.Tickers,
 			Coins:     &cc.Coins,
 			Exchanges: &cc.Exchanges,
 		},
-		Backend:   opts.Backend,
+		Backend:   backend,
 		StartDate: startDate,
 		EndDate:   endDate,
 		Interval:  pluginSpec.Interval,
