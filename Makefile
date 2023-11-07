@@ -11,8 +11,18 @@ lint:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
+	@command -v cloudquery >/dev/null 2>&1 || { \
+		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		exit 1; \
+	}
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs/ test/config.yml
+	mv -vf docs/coinpaprika docs/tables
+
+.PHONY: dist
+dist:
+	go run main.go package -m "Release ${VERSION}" ${VERSION} .
 
 .PHONY: gen-mocks
 gen-mocks:

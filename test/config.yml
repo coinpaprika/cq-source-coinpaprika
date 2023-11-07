@@ -1,0 +1,26 @@
+kind: source
+spec:
+  name: "coinpaprika"
+  path: "coinpaprika/coinpaprika"
+  version: "v1.0.1"
+  backend_options:
+    table_name: "cq_state_coinpaprika"
+    connection: "@@plugins.sqlite.connection"
+  tables:
+    [ "*" ]
+  destinations:
+    - "test"
+  spec:
+    api_debug: true
+    start_date: "2023-05-15T08:00:00Z" # for free plan up to 1 year ago
+    interval: 24h
+    rate_duration: 30d
+    rate_number: 25000
+    tickers:
+      ["btc-bitcoin"]
+---
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v2.2.3" # latest version of test plugin
