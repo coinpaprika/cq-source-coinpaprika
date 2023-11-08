@@ -27,6 +27,11 @@ jobs:
           args: --timeout=3m
           skip-pkg-cache: true
           skip-build-cache: true
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v3.28.0
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
