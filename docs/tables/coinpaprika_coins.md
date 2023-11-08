@@ -1,7 +1,5 @@
 # Table: coinpaprika_coins
 
-This table shows data for Coinpaprika Coins.
-
 https://api.coinpaprika.com/#tag/Coins/paths/~1coins/get
 
 The primary key for this table is **id**.
@@ -15,8 +13,6 @@ The following tables depend on coinpaprika_coins:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

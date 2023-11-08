@@ -1,4 +1,4 @@
-# Source Plugin: coinpaprika-coinpaprika
+# Source Plugin: coinpaprika
 
 ## Tables
 
