@@ -8,11 +8,12 @@ The following source configuration file will sync to a PostgreSQL database. See 
 
 1. Without API token, `Free` plan (25 000 calls/month) minimal interval 1h, see  [available history range depending on the selected API plan](https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById).
 
-     ```yaml
+     ```yaml copy
      kind: source
      spec:
        name: "coinpaprika"
        path: "coinpaprika/coinpaprika"
+       registry: "cloudquery"
        version: "v2.0.0"
        backend_options:
          table_name: "cq_state_coinpaprika"
@@ -42,11 +43,12 @@ The following source configuration file will sync to a PostgreSQL database. See 
 
 2. With API token rate limited for `Bussines` plan (3 000 000 calls/month). API token can be generated at [coinpaprika.com/api](https://coinpaprika.com/api).
 
-    ```yaml
+    ```yaml copy
     kind: source
     spec:
       name: "coinpaprika"
       path: "coinpaprika/coinpaprika"
+      registry: "cloudquery"
       version: "v2.0.0"
       backend_options:
         table_name: "cq_state_coinpaprika"
