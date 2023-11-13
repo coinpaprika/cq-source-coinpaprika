@@ -18,6 +18,7 @@
 cq-source-coinpaprika
 .cq
 coinpaprika.yml
+cloudquery
 
 dist
 *.log
