@@ -36,7 +36,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
        name: sqlite
        path: cloudquery/sqlite
        registry: cloudquery
-       version: "v2.4.15"
+       version: "v2.4.16"
        spec:
          connection_string: ./db.sql    
      ```
@@ -72,7 +72,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
       name: sqlite
       path: cloudquery/sqlite
       registry: cloudquery
-      version: "v2.4.15"
+      version: "v2.4.16"
       spec:
         connection_string: ./db.sql 
     ```
