@@ -41,7 +41,7 @@ The following source configuration file will sync to a PostgreSQL database. See 
          connection_string: ./db.sql    
      ```
 
-2. With API token rate limited for `Bussines` plan (3 000 000 calls/month). API token can be generated at [coinpaprika.com/api](https://coinpaprika.com/api).
+2. With API token rate limited for `Business` plan (3 000 000 calls/month). API token can be generated at [coinpaprika.com/api](https://coinpaprika.com/api).
 
     ```yaml copy
     kind: source
