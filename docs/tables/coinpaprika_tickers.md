@@ -1,7 +1,5 @@
 # Table: coinpaprika_tickers
 
-This table shows data for Coinpaprika Tickers.
-
 https://api.coinpaprika.com/#tag/Tickers/operation/getTickersHistoricalById
 
 The composite primary key for this table is (**coin_id**, **timestamp**).

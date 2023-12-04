@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: "coinpaprika"
+  path: "./cq-source-coinpaprika"
+  registry: "local"
+  version: "v1.0.1"
+  tables: ["*"]
+  destinations:
+    - "test"
+---
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v2.2.3"

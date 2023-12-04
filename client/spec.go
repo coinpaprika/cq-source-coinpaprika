@@ -9,4 +9,5 @@ type Spec struct {
 	ApiDebug     bool     `json:"api_debug"`
 	RateNumber   int      `json:"rate_number"`
 	RateDuration string   `json:"rate_duration"`
+	Concurrency  int      `json:"concurrency"`
 }
